@@ -1,0 +1,5 @@
+.idea
+.DS_Store
+lfwa
+__pycache__/
+**/**/__pycache__/

@@ -6,30 +6,25 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam
+from data_loader import DataLoader
+from siamese_network import SiameseNetwork
 
 path_separator = os.path.sep
 # Environment settings
-IS_COLAB = (os.name == 'posix')
+IS_COLAB = False
 LOAD_DATA = not (os.name == 'posix')
 IS_EXPERIMENT = False
 train_name = 'train'
 test_name = 'test'
 WIDTH = HEIGHT = 105
-CEELS = 1
+CEELS = 3
 loss_type = "binary_crossentropy"
 validation_size = 0.2
 early_stopping = True
 
-if IS_COLAB:
-    # the google drive folder we used
-    data_path = os.path.sep + os.path.join('content', 'drive', 'My\ Drive', 'datasets', 'lfw2').replace('\\', '')
-else:
-    # locally
-    from data_loader import DataLoader
-    from siamese_network import SiameseNetwork
 
-    data_path = os.path.join('lfwa', 'lfw2')
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+data_path = os.path.join('lfwa', 'lfw2')
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def run_combination(l, bs, ep, pat, md, seed, train_path, test_path):
@@ -67,11 +62,11 @@ def run():
     data_set_save_type = 'pickle'
     train_path = os.path.join(data_path, f'{train_name}.{data_set_save_type}')  # A path for the train file
     test_path = os.path.join(data_path, f'{test_name}.{data_set_save_type}')  # A path for the test file
-    if LOAD_DATA:  # If the training data already exists
-        loader = DataLoader(width=WIDTH, height=HEIGHT, cells=CEELS, data_path=data_path, output_path=train_path)
-        loader.load(set_name=train_name)
-        loader = DataLoader(width=WIDTH, height=HEIGHT, cells=CEELS, data_path=data_path, output_path=test_path)
-        loader.load(set_name=test_name)
+    # if LOAD_DATA:  # If the training lfw2 already exists
+    loader = DataLoader(width=WIDTH, height=HEIGHT, cells=CEELS, data_path=data_path, output_path=train_path)
+    loader.load(set_name=train_name)
+    loader = DataLoader(width=WIDTH, height=HEIGHT, cells=CEELS, data_path=data_path, output_path=test_path)
+    loader.load(set_name=test_name)
 
     result_path = os.path.join(data_path, f'results.csv')  # A path for the train file
     results = {'lr': [], 'batch_size': [], 'epochs': [], 'patience': [], 'min_delta': [], 'seed': [], 'loss': [],

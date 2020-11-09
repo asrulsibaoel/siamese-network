@@ -8,7 +8,7 @@ import numpy as np
 
 class DataLoader(object):
     """
-    Class for loading data from image files
+    Class for loading lfw2 from image files
     """
 
     def __init__(self, width, height, cells, data_path, output_path):
@@ -97,4 +97,4 @@ class DataLoader(object):
             pickle.dump([[x_first, x_second], y, names], f)
 
 
-print("Loaded data loader")
+print("Loaded lfw2 loader")
